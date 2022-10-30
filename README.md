@@ -1,4 +1,4 @@
-# r_intro_lecture_day_1_live
-R intro Day 1 lecture - live session
+# r_intro_PS_1
+R intro Problem set - 1
 
-this lecture cover basic commands using for calculation of summary statistics 
+
