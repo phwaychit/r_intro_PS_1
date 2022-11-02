@@ -1,7 +1,7 @@
 ---
-title: "r_int_day_1_r_basic_sumstat"
+title: "r_intro PS 1"
 author: "Nicholus Tint Zaw"
-date: "2022-10-27"
+date: "2022-10-31"
 output: pdf_document
 ---
 
@@ -11,74 +11,84 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-# Content 
+# Exploring the Central Limit Theorem 
 
-1. r - base commands for Summary Statistics 
-1. loading data files  
-1. exercises 
+The CLT is the backbone for the sample survey method and states the following main concepts. 
+
++ The sampling distribution of a sample mean is approximately normal if the sample size is large enough, even if the population distribution is not normal. 
++ The mean of the sampling distribution will equal the mean of the population distribution. 
++ The standard deviation of the sampling distribution will be equal to the standard deviation of the population distribution divided by the sample size.
 
 
+In this problem set, we will test those assumptions using some basic R commands. 
 
 
+## Prerequisite reading 
 
-## r - base commands for Summary Statistics 
+You must finish reading this [\textcolor{blue}{Facebook post}](https://www.facebook.com/nickyonfb/posts/pfbid0TqwbTUCh89KwYnU6nkK26hTCrS8FS6gQcGtqa7Q5ajyjMDCGQTJpsCtqwgKqmnXXl) to get a general idea about CLT and sampling distribution. Then, go to [\textcolor{blue}{this website}](https://onlinestatbook.com/stat_sim/sampling_dist/index.html?fbclid=IwAR3J7qta7safgie6eZY5ucTK_DLzPUSwr8aLFkCUg3t1GTS-20qWXwHE0Tk) and perform this website to perform some tests on the concept you learned from that post. As we will implement some of those tests in the R, your understanding of those concepts is critical. So, digest it carefully.  
+
+
+## Some useful Base-R commands for this exercise 
+
+Use `hist()` for plot histogram. 
 
 ```{r}
-# load r-bulit-in dataset 
 
-df <- iris
-
-# datafile summary 
-summary(df)
-
-# mean 
-mean(df$Sepal.Length)
-
-# SD
-sd(df$Sepal.Length)
-
-# median
-median(df$Sepal.Length)
-
-# percentile 
-quantile(df$Sepal.Width, 0.1)
-
-quantile(df$Petal.Length, c(0.1, 0.9))
-
-quantile(df$Petal.Length, seq(0, 1, by = 0.1))
-
-# quartile
-quantile(df$Petal.Length, seq(0, 1, by = 0.25))
-
-# IQR
-IQR(df$Petal.Width)
-
-quantile(df$Petal.Width, 0.75) - quantile(df$Petal.Width, 0.25)
+hist(mtcars$mpg)
 
 ```
 
 
-
-## loading data files  
+For random sampling, use `sample()`. 
 
 ```{r}
-# load csv 
-df <- read.csv("wnba.csv")
 
+sample(1:50, 2)
 
-# excel file 
-library("readxl")
+```
 
-df_2 <- read_excel("wnba.xlsx", sheet = "wnba")
+For multiple-time random selection processes (replication), use this command - `replicate()`. You can type `?replicate()` to study the general description and usage in the help file.  
+
+```{r}
+# select 2 numbers from 1 to 50 and calculate mean
+# and repeat that process for 100 times
+
+replicate(n = 100, expr = mean(sample(1:50, size = 2, replace=TRUE)))
 
 ```
 
 
-
-## exercises 
-
-In a Science test, each correct answer was awarded 5 marks and 2 marks were deducted for each incorrect answer. If there were 20 questions in the test and Danny obtained 79 marks, how many questions did he answer correctly? 
+OK. Now, we are landing on the actual problem set question. We will test the claims of CLT using the `iris` dataset (built-in dataset from R). 
 
 
++ Please load the `iris` dataset and assign it as `df`. 
++ Use `Sepal.Length` variable and calculate the mean value - assigned as `pop_mean`. 
++ Then, select the 30 sample data points from `Sepal.Length` column and calculate the mean. This time assign the calculation result as `sample_mean`. 
++ Compare the `pop_mean` and `sample_mean`, and explain what you observed. 
++ Before moving to test the sampling distribution of means, please plot the `Sepal.Length` as a histogram plot and observe its distribution. Is it normal distribution? Please explain your answer. 
+
+
+
+Finally, we are going to implement the sampling distribution of the means. 
+
+1. Construct the list of 100 means values from the `Sepal.Length` and each mean value should construct from 10 sample sizes. (sample size = 10, replication 100 times)
+2. Assigned the result (vector with 100 numbers) as `means_list_1`. 
+3. Plot histogram using `mean_list_1`. 
+4. Calculate the mean value of `mean_list_1` and assign the result as `means_clt_1`. 
+
+Repeat the same process from numbers 1 to 4, but using different sample size and replication number this time. 
+
++ for `means_list_2`, using a sample size 30 and replication time 200. Save its mean value as `means_clt_2`. 
++ for `means_list_3`, using a sample size 50 and replication time 1,000. Save its mean value as `means_clt_3`. 
+
+
+Compare the 4 histograms and 4 different mean values and explain whether or not the CLT's claims are working well. 
+
+What I mean by 4 is the histograms and mean values from the following 4 distributions. 
+
+1. all `Sepal.Length` observations from iris dataset - as population 
+2. `means_list_1`
+3. `means_list_2`
+4. `means_list_3` 
 
 
