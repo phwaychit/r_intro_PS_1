@@ -96,6 +96,9 @@ What I mean by 4 is the histograms and mean values from the following 4 distribu
 ```{r}
 df <- iris
 df
+```
+
+```{r}
 pop_mean <- mean(df$Sepal.Length)
 pop_mean
 e <- sample(df$Sepal.Length, size=30,replace = TRUE)
@@ -103,16 +106,28 @@ e
 sample_mean <- mean(e)
 sample_mean
 hist(df$Sepal.Length)
+```
+
+```{r}
+set.seed(2596)
 means_list_1 <- replicate(n = 100, expr = mean(sample(df$Sepal.Length, size = 10, replace=TRUE)))
 means_list_1
 hist(means_list_1)
 means_clt_1 <- mean(means_list_1)
 means_clt_1
+```
+
+```{r}
+set.seed(1696)
 means_list_2 <- replicate(n = 200, expr = mean(sample(df$Sepal.Length, size = 30, replace=TRUE)))
 means_list_2
 hist(means_list_2)
 means_clt_2 <- mean(means_list_2)
 means_clt_2
+```
+
+```{r}
+set.seed(4978)
 means_list_3 <- replicate(n = 1000, expr = mean(sample(df$Sepal.Length, size = 50, replace=TRUE)))
 means_list_3
 hist(means_list_3)
